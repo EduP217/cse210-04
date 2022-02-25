@@ -1,4 +1,4 @@
-from screen.entity import Entity
+from elements.entity import Entity
 
 
 class Bot(Entity):
