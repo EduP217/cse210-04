@@ -1,57 +1,49 @@
-from game.casting.actor import Actor
-from game.casting.cast import Cast
+from services.keyboard_service import KeyboardService
+from services.video_service import VideoService
 
-from game.directing.director import Director
+from elements.collection import Collection
+from elements.entity import Entity
 
-from game.services.keyboard_service import KeyboardService
-from game.services.video_service import VideoService
+from utils.point import Point
+from utils.color import Color
 
-from game.shared.color import Color
-from game.shared.point import Point
+from screen import Screen
 
-
-FRAME_RATE = 12
-MAX_X = 900
+CAPTION = "Rock & Gems Scanner"
+MAX_X = 800
 MAX_Y = 600
-CELL_SIZE = 15
-FONT_SIZE = 15
-COLS = 60
-ROWS = 40
-CAPTION = "Greed"
+CELL_SIZE = 30
+FRAME_RATE = 12
 WHITE = Color(255, 255, 255)
-
 
 def main():
     
-    # create the cast
-    cast = Cast()
+    """ Gather all the elements of the game """
+    screen_collection = Collection()
     
-    # create the banner
-    banner = Actor()
-    banner.set_text("")
-    banner.set_font_size(FONT_SIZE)
-    banner.set_color(WHITE)
-    banner.set_position(Point(CELL_SIZE, 0))
-    cast.add_actor("banners", banner)
+    """ Initialize the score entity to be setted in the board """
+    score_position = Point(5, 5)    
+    score = Entity()
+    score.set_entity("", CELL_SIZE, WHITE, score_position)
     
-    # create the robot
-    x = int(MAX_X / 2)
-    y = 580
-    position = Point(x, y)
-
-    robot = Actor()
-    robot.set_text("#")
-    robot.set_font_size(FONT_SIZE)
-    robot.set_color(WHITE)
-    robot.set_position(position)
-    cast.add_actor("robots", robot)
+    """ Setting the score into the board """
+    screen_collection.add_entity("score", score)
     
-    # start the game
+    """ Initialize the player entity to be setted in the board """
+    player_position = Point(int(MAX_X/2), int(MAX_X/2))
+    player = Entity()
+    player.set_entity("º-º", CELL_SIZE, WHITE, player_position)
+    
+    """ Setting the player into the board """
+    screen_collection.add_entity("player", player)
+    
+    """ Initialize the services functionality """
     keyboard_service = KeyboardService(CELL_SIZE)
     video_service = VideoService(CAPTION, MAX_X, MAX_Y, CELL_SIZE, FRAME_RATE)
-    director = Director(keyboard_service, video_service)
-    director.start_game(cast)
-
+    
+    """ INitialize the screen board and start the game"""
+    screen = Screen(keyboard_service, video_service)
+    screen.start_game(screen_collection)
 
 if __name__ == "__main__":
     main()

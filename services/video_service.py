@@ -1,5 +1,5 @@
 import pyray
-
+from elements.entity import Entity
 
 class VideoService:
     """Outputs the game state. The responsibility of the class of objects is to draw the game state 
@@ -32,27 +32,27 @@ class VideoService:
         if self._debug == True:
             self._draw_grid()
     
-    def draw_actor(self, actor):
-        """Draws the given actor's text on the screen.
+    def draw_entity(self, entity : Entity):
+        """Draws the given entity's text on the screen.
 
         Args:
-            actor (Actor): The actor to draw.
+            entity (entity): The entity to draw.
         """ 
-        text = actor.get_text()
-        x = actor.get_position().get_x()
-        y = actor.get_position().get_y()
-        font_size = actor.get_font_size()
-        color = actor.get_color().to_tuple()
+        text = entity.get_text()
+        x = entity.get_position().get_x()
+        y = entity.get_position().get_y()
+        font_size = entity.get_font_size()
+        color = entity.get_color().to_tuple()
         pyray.draw_text(text, x, y, font_size, color)
         
-    def draw_actors(self, actors):
-        """Draws the text for the given list of actors on the screen.
+    def draw_entities(self, entities):
+        """Draws the text for the given list of entities on the screen.
 
         Args:
-            actors (list): A list of actors to draw.
+            entities (list): A list of entities to draw.
         """ 
-        for actor in actors:
-            self.draw_actor(actor)
+        for entity in entities:
+            self.draw_entity(entity)
     
     def flush_buffer(self):
         """Copies the buffer contents to the screen. This method should be called at the end of
