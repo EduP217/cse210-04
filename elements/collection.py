@@ -63,6 +63,20 @@ class Collection:
         if group in self._entities.keys():
             result = self._entities[group][0]
         return result
+    
+    def get_entity(self, group, idx) -> Entity:
+        """Gets the entity in the given group.
+        
+        Args:
+            group (string): The name of the group.
+            
+        Returns:
+            List: The entity in the group.
+        """
+        result = None
+        if group in self._entities.keys():
+            result = self._entities[group][idx]
+        return result
 
     def remove_entity(self, group, entity):
         """Removes an entity from the given group.

@@ -51,19 +51,21 @@ class Screen:
         Args:
             collection (collection): The collection of entities.
         """
-        score = collection.get_first_entity("score")
+        score = collection.get_first_entity("banners")
+        banner = collection.get_entity("banners", 1)
         player = collection.get_first_entity("player")
         bots = collection.get_entities("bots")
 
         score.set_text("SCORE : %")
+        banner.set_text("")
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
         player.move_next(max_x, max_y)
         
-        # for bot in bots:
-        #     if player.get_position().equals(bot.get_position()):
-        #         message = bot.get_message()
-        #         score.set_text(message)
+        for bot in bots:
+            if player.get_position().equals(bot.get_position()):
+                message = bot.get_message()
+                banner.set_text(message)
         
     def _do_outputs(self, collection : Collection):
         """Draws the entities on the screen.
