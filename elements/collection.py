@@ -50,7 +50,7 @@ class Collection:
             results.extend(self._entities[group])
         return results
 
-    def get_first_entity(self, group) -> Entity:
+    def get_first_entity(self, group):
         """Gets the first entity in the given group.
         
         Args:
@@ -64,7 +64,7 @@ class Collection:
             result = self._entities[group][0]
         return result
     
-    def get_entity(self, group, idx) -> Entity:
+    def get_entity(self, group, idx):
         """Gets the entity in the given group.
         
         Args:
