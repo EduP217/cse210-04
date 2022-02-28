@@ -46,7 +46,6 @@ class Collection:
         """
         results = []
         for group in self._entities:
-            print(group)
             results.extend(self._entities[group])
         return results
 
