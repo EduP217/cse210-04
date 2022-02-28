@@ -21,6 +21,7 @@ class Screen:
         """
         self._keyboard_service = keyboard_service
         self._video_service = video_service
+        self._banner_timer = 0
         
     def start_game(self, collection : Collection):
         """Starts the game using the given collection. Runs the main game loop.
@@ -56,16 +57,31 @@ class Screen:
         player = collection.get_first_entity("player")
         bots = collection.get_entities("bots")
 
-        score.set_text("SCORE : %")
-        banner.set_text("")
+        self._banner_timer += 1
+        if self._banner_timer >= 75:
+            banner.set_text("")
+            self._banner_timer = 0
+            
+        score.set_text(f"SCORE : {player.get_score()}")
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
         player.move_next(max_x, max_y)
         
         for bot in bots:
             if player.get_position().equals(bot.get_position()):
+                self._banner_timer = 0
                 message = bot.get_message()
+                bot_score = bot.get_score()
+                player_score = player.get_score()
+                if bot.get_type() == 0:
+                    message += f" +{bot_score}pts"
+                    player_score += bot_score
+                else:
+                    message += f" -{bot_score}pts"
+                    player_score -= bot_score
+                player.set_score(player_score)
                 banner.set_text(message)
+                collection.remove_entity("bots", bot)
         
     def _do_outputs(self, collection : Collection):
         """Draws the entities on the screen.
