@@ -43,7 +43,7 @@ class Entity:
         """Gets the Entity's font size.
         
         Returns:
-            Point: The Entity's font size.
+            font_size: The Entity's font size.
         """
         return self._font_size
 
