@@ -71,8 +71,10 @@ def main():
         bot.set_type(bot_selected)
         if bot_selected == 0:
             bot.set_score(50)
+            bot.set_velocity(5)
         else:
             bot.set_score(100)
+            bot.set_velocity(10)
         screen_collection.add_entity("bots", bot)
     
     """ Initialize the player entity to be setted in the board """
@@ -90,7 +92,7 @@ def main():
     
     """ INitialize the screen board and start the game"""
     screen = Screen(keyboard_service, video_service)
-    screen.start_game(screen_collection)
+    screen.start_game(screen_collection, CELL_SIZE)
 
 if __name__ == "__main__":
     main()

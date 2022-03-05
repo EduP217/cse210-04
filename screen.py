@@ -23,7 +23,7 @@ class Screen:
         self._video_service = video_service
         self._banner_timer = 0
         
-    def start_game(self, collection : Collection):
+    def start_game(self, collection : Collection, element_size):
         """Starts the game using the given collection. Runs the main game loop.
 
         Args:
@@ -32,7 +32,7 @@ class Screen:
         self._video_service.open_window()
         while self._video_service.is_window_open():
             self._get_inputs(collection)
-            self._do_updates(collection)
+            self._do_updates(collection, element_size)
             self._do_outputs(collection)
         self._video_service.close_window()
 
@@ -46,7 +46,7 @@ class Screen:
         velocity = self._keyboard_service.get_direction()
         player.set_velocity(velocity)
 
-    def _do_updates(self, collection : Collection):
+    def _do_updates(self, collection : Collection, element_size):
         """Updates the player's position and resolves any collisions with bots.
         
         Args:
@@ -68,6 +68,18 @@ class Screen:
         player.move_next(max_x, max_y)
         
         for bot in bots:
+            if(bot.get_falling()):
+                #print(self._video_service.get_height())
+                #print(bot.get_position().get_y())
+                bot_y_position = bot.get_position().get_y()
+                max_falling = max_y - element_size
+                
+                if bot_y_position <=  max_falling:
+                    bot_y_position = bot_y_position + bot.get_velocity()
+                    bot.get_position().set_y(bot_y_position)
+                    if bot_y_position ==  max_falling:
+                        bot.set_falling(False)
+            
             if player.get_position().equals(bot.get_position()):
                 self._banner_timer = 0
                 message = bot.get_message()
@@ -79,9 +91,11 @@ class Screen:
                 else:
                     message += f" -{bot_score}pts"
                     player_score -= bot_score
+                
+                bot.set_falling(True)
                 player.set_score(player_score)
                 banner.set_text(message)
-                collection.remove_entity("bots", bot)
+                #collection.remove_entity("bots", bot)
         
     def _do_outputs(self, collection : Collection):
         """Draws the entities on the screen.
