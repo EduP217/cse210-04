@@ -68,6 +68,7 @@ class Screen:
         player.move_next(max_x, max_y)
         
         for bot in bots:
+            bot.set_falling(True)
             if(bot.get_falling()):
                 #print(self._video_service.get_height())
                 #print(bot.get_position().get_y())
@@ -78,7 +79,7 @@ class Screen:
                     bot_y_position = bot_y_position + bot.get_velocity()
                     bot.get_position().set_y(bot_y_position)
                     if bot_y_position ==  max_falling:
-                        bot.set_falling(False)
+                        bot.get_position().set_y(0)
             
             if player.get_position().equals(bot.get_position()):
                 self._banner_timer = 0
@@ -92,7 +93,8 @@ class Screen:
                     message += f" -{bot_score}pts"
                     player_score -= bot_score
                 
-                bot.set_falling(True)
+                bot.get_position().set_y(800)
+
                 player.set_score(player_score)
                 banner.set_text(message)
                 #collection.remove_entity("bots", bot)
