@@ -17,6 +17,7 @@ class Bot(Entity):
         self._message = ""
         self._type = 0
         self._score = 0
+        self._falling = False
         
     def get_id(self):
         """Gets the bot's id.
@@ -81,3 +82,19 @@ class Bot(Entity):
             score (number): The given score.
         """
         self._score = score
+    
+    def get_falling(self):
+        """Gets the bot's falling.
+        
+        Returns:
+            number: The falling.
+        """
+        return self._falling
+    
+    def set_falling(self, falling):
+        """Updates the falling to the given one.
+        
+        Args:
+            falling (bool): The given falling.
+        """
+        self._falling = falling

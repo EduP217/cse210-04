@@ -5,6 +5,7 @@ from services.video_service import VideoService
 
 from elements.collection import Collection
 from elements.entity import Entity
+from elements.player import Player
 from elements.bot import Bot
 
 from utils.point import Point
@@ -19,8 +20,8 @@ CELL_SIZE = 20
 FRAME_RATE = 15
 WHITE = Color(255, 255, 255)
 BOTS_IN_SCREEN = 50
-GRID_COLS = 35
-GRID_ROWS = 30
+GRID_COLS = 40
+GRID_ROWS = 28
 
 BOTS_TEXT = ["*", "o"]
 BOTS_MESSAGE = ["You found a gem !!", "You found a rock !!"]
@@ -47,10 +48,10 @@ def main():
     screen_collection.add_entity("banners", banner)
     
     for n in range(BOTS_IN_SCREEN):
-        bot_random_selected = random.randint(0, 1)
+        bot_selected = n%2
         
-        text = BOTS_TEXT[bot_random_selected]
-        message = BOTS_MESSAGE[bot_random_selected]
+        text = BOTS_TEXT[bot_selected]
+        message = BOTS_MESSAGE[bot_selected]
 
         x = random.randint(1, GRID_COLS - 1)
         y = random.randint(1, GRID_ROWS - 1)
@@ -65,13 +66,22 @@ def main():
         """ Setting the bot into the board """
         bot = Bot()
         bot.set_entity(text, CELL_SIZE, color, position)
+        bot.set_id(n)
         bot.set_message(message)
+        bot.set_type(bot_selected)
+        if bot_selected == 0:
+            bot.set_score(50)
+            bot.set_velocity(5)
+        else:
+            bot.set_score(100)
+            bot.set_velocity(10)
         screen_collection.add_entity("bots", bot)
     
     """ Initialize the player entity to be setted in the board """
     player_position = Point(int(MAX_X/2), int(MAX_X/2))
-    player = Entity()
+    player = Player()
     player.set_entity("P", CELL_SIZE, WHITE, player_position)
+    player.set_score(600)
     
     """ Setting the player into the board """
     screen_collection.add_entity("player", player)
@@ -82,7 +92,7 @@ def main():
     
     """ INitialize the screen board and start the game"""
     screen = Screen(keyboard_service, video_service)
-    screen.start_game(screen_collection)
+    screen.start_game(screen_collection, CELL_SIZE)
 
 if __name__ == "__main__":
     main()

@@ -58,6 +58,10 @@ class Point:
             integer: The vertical distance.
         """
         return self._y
+    
+    def set_y(self, value):
+        """Set the vertical distance."""
+        self._y = value
 
     def scale(self, factor):
         """
